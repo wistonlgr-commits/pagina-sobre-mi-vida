@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Personal</title>
+    <style>
+        /* --- ESTILOS CSS --- */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(to bottom, #f4f4f4, #dbe3ff); /* Degradado de gris a azul */
+            color: #333;
+            line-height: 1.6;
+            overflow: hidden; /* Oculta el scroll durante la presentación */
+        }
+
+        /* Presentación Inicial */
+        #presentacion-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100vh;
+            transition: opacity 1s ease-in-out;
+            position: relative;
+        }
+
+        #presentacion-container.oculto {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #presentacion-container h1 {
+            font-size: 3em;
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        #presentacion-container img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #007BFF;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        #entrar-btn {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border: none;
+            border-radius: 50px;
+            background-color: #007BFF;
+            color: white;
+            transition: background-color 0.3s ease;
+            margin-top: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        #entrar-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Animación de Humo */
+        .humo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 300px;
+            background-color: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            animation: humoAnimacion 1s forwards;
+            z-index: 1000;
+        }
+
+        @keyframes humoAnimacion {
+            from {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(5);
+                opacity: 0;
+            }
+        }
+
+        /* Contenedor Principal del Portafolio */
+        #portafolio-container {
+            display: none;
+            animation: fadeIn 1s forwards;
+            min-height: 100vh;
+            padding-top: 70px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Barra de Navegación Superior */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #007BFF; /* Color azul */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            z-index: 500;
+            text-align: center;
+        }
+        
+        .navbar button {
+            background: none;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+            padding: 0 15px;
+            color: white; /* Color de texto blanco para contrastar */
+            transition: color 0.3s ease;
+        }
+
+        .navbar button:hover {
+            color: #dbe3ff; /* Un azul más claro al pasar el mouse */
+        }
+
+        /* Estilos de las Páginas */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .pagina { display: none; }
+        .pagina.activa { display: block; }
+        
+        h2 { color: #007BFF; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        
+        ul { list-style-type: none; padding: 0; }
+        li { background: #f9f9f9; margin-bottom: 10px; padding: 15px; border-left: 4px solid #007BFF; }
+
+        /* Estilos para la página 'Sobre Mí' (con la foto y el texto) */
+        #sobre-mi-pagina {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        #sobre-mi-pagina img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        #sobre-mi-descripcion {
+            flex-grow: 1;
+        }
+
+        .galeria-fotos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .galeria-fotos img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .regresar-btn {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .regresar-btn:hover {
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="presentacion-container">
+        <img id="random-photo" src="foto.jpg" alt="Tu foto de perfil">
+        <h1>¡Hola! Bienvenido a mi Portafolio.</h1>
+        <button id="entrar-btn">Entrar</button>
+    </div>
+
+    <div id="portafolio-container">
+        <div class="navbar">
+            <button onclick="navegar('inicio')">Inicio</button>
+            <button onclick="navegar('proyectos')">Proyectos</button>
+            <button onclick="navegar('estudios')">Estudios</button>
+            <button onclick="navegar('fotos')">Fotos</button>
+            <button onclick="navegar('sobre-mi')">Sobre Mí</button>
+        </div>
+
+        <div class="container">
+            <div id="content-area">
+                </div>
+        </div>
+    </div>
+    
+    <script>
+        // --- CÓDIGO JAVASCRIPT ---
+
+        const presentacionContainer = document.getElementById('presentacion-container');
+        const portafolioContainer = document.getElementById('portafolio-container');
+        const entrarBtn = document.getElementById('entrar-btn');
+        const contentArea = document.getElementById('content-area');
+
+        // Contenido de las páginas
+        const paginas = {
+            'inicio': `
+                <div class="pagina activa" id="inicio-pagina">
+                    <h2>Bienvenido</h2>
+                    <p>Utiliza la barra de navegación superior para explorar mi portafolio. Aquí podrás encontrar información sobre mis proyectos, estudios, y un poco más sobre mí.</p>
+                </div>
+            `,
+            'proyectos': `
+                <div class="pagina" id="proyectos-pagina">
+                    <h2>Proyectos</h2>
+                    <p>Esta sección estará lista pronto con la descripción de mis proyectos.</p>
+                    <button class="regresar-btn" onclick="navegar('inicio')">Regresar</button>
+                </div>
+            `,
+            'estudios': `
+                <div class="pagina" id="estudios-pagina">
+                    <h2>Estudios</h2>
+                    <p>Aquí detallaré mi formación académica y otros estudios relevantes.</p>
+                    <button class="regresar-btn" onclick="navegar('inicio')">Regresar</button>
+                </div>
+            `,
+            'fotos': `
+                <div class="pagina" id="fotos-pagina">
+                    <h2>Fotos</h2>
+                    <div class="galeria-fotos">
+                        <img src="https://via.placeholder.com/150" alt="Foto 1">
+                        <img src="https://via.placeholder.com/150" alt="Foto 2">
+                        <img src="https://via.placeholder.com/150" alt="Foto 3">
+                    </div>
+                    <button class="regresar-btn" onclick="navegar('inicio')">Regresar</button>
+                </div>
+            `,
+            'sobre-mi': `
+                <div class="pagina" id="sobre-mi-pagina">
+                    <img src="https://via.placeholder.com/200/007bff/ffffff?Text=Informática" alt="Imagen Informática">
+                    <div id="sobre-mi-descripcion">
+                        <h2>Sobre Mí</h2>
+                        <p>¡Hola! Soy una persona de 18 años con una gran pasión por el mundo de la informática. Actualmente, me encuentro cursando mis estudios en esta fascinante área, donde estoy adquiriendo conocimientos sólidos y habilidades técnicas.</p>
+                        <p>A lo largo de mi trayectoria, he tenido la oportunidad de trabajar con la gestión de bases de datos, explorando diferentes herramientas y técnicas para organizar y analizar información de manera eficiente.</p>
+                        <p>Además, me encanta programar en Python, un lenguaje versátil y poderoso que me permite desarrollar soluciones creativas a diversos problemas y automatizar tareas.</p>
+                        <p>Estoy emocionado por seguir aprendiendo y creciendo en el campo de la informática, y este portafolio es una ventana a mis proyectos y experiencias.</p>
+                    </div>
+                    <button class="regresar-btn" onclick="navegar('inicio')">Regresar</button>
+                </div>
+            `
+        };
+
+        // Función para cambiar de página
+        function navegar(paginaDestino) {
+            contentArea.innerHTML = paginas[paginaDestino];
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Lógica de la presentación y la transición
+        entrarBtn.addEventListener('click', () => {
+            const humo = document.createElement('div');
+            humo.classList.add('humo');
+            document.body.appendChild(humo);
+
+            setTimeout(() => {
+                presentacionContainer.style.display = 'none';
+                portafolioContainer.style.display = 'block';
+                document.body.style.backgroundColor = '#f4f4f4'; // Cambiado por el degradado en el CSS
+                document.body.style.overflow = 'auto';
+                humo.remove();
+                navegar('inicio');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
